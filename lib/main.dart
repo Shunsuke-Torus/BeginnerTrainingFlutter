@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './question.dart';
+import './answer.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,47 +11,57 @@ class MyApp extends StatefulWidget {
   State<StatefulWidget> createState() {
     // TODO: implement createState
     // throw UnimplementedError();
-    return MyAppState();
+    return _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
-  void answerQuestion() {
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
+  void _answerQuestion() {
     setState(() {
-      questionIndex += 1;
+      _questionIndex += 1;
     });
-    print(questionIndex);
+    print(_questionIndex);
   }
 
   // @override = コードをわかりやすくスッキリするためにある
   // ステートレスウィジェットが提供するビルドメソッドを意図的に上書きしていることを明確にする｡
   @override
   Widget build(BuildContext context) {
+    // Map()
     var questions = [
-      "What's your favorite color ?",
-      "What's your favorite animal ?",
-      "What's your favorite game ?",
+      {
+        "questionContext": "What's your favorite color ?",
+        "answers": ["Red", "Blue", "Violet"]
+      },
+      {
+        "questionContext": "What's your favorite animal ?",
+        "answers": ["Cow", "Monkey", "human"],
+      },
+      {
+        "questionContext": "What's your favorite game ?",
+        "answers": [
+          "Splatoon",
+          "Mario Garaxy",
+          "Super Smash Bros",
+          "Resident Evil",
+        ],
+      },
     ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('My First App'),
         ),
-        body: Column(children: <Widget>[
-          Text(questions[questionIndex]),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("Answer 1"),
+        body: Column(children: [
+          Question(
+            questionContext: questions[_questionIndex]["questionContext"],
           ),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("Answer 2"),
-          ),
-          ElevatedButton(
-            onPressed: answerQuestion,
-            child: Text("Answer 3"),
-          ),
+          ...(questions[_questionIndex]["answers"] as List<String>)
+              .map((answer) {
+            return Answer(
+                selectHandler: _answerQuestion, answerContext: answer);
+          }).toList()
         ]),
       ),
     );
