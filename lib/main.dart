@@ -17,7 +17,27 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  final questions = const [
+    {
+      "questionContext": "What's your favorite color ?",
+      "answers": ["Red", "Blue", "Violet"]
+    },
+    {
+      "questionContext": "What's your favorite animal ?",
+      "answers": ["Cow", "Monkey", "human"],
+    },
+    {
+      "questionContext": "What's your favorite game ?",
+      "answers": [
+        "Splatoon",
+        "Mario Garaxy",
+        "Super Smash Bros",
+        "Resident Evil",
+      ],
+    },
+  ];
   void _answerQuestion() {
+    if (_questionIndex < questions.length) {}
     setState(() {
       _questionIndex += 1;
     });
@@ -28,54 +48,34 @@ class _MyAppState extends State<MyApp> {
   // ステートレスウィジェットが提供するビルドメソッドを意図的に上書きしていることを明確にする｡
   @override
   Widget build(BuildContext context) {
-    final questions = [
-      {
-        "questionContext": "What's your favorite color ?",
-        "answers": ["Red", "Blue", "Violet"]
-      },
-      {
-        "questionContext": "What's your favorite animal ?",
-        "answers": ["Cow", "Monkey", "human"],
-      },
-      {
-        "questionContext": "What's your favorite game ?",
-        "answers": [
-          "Splatoon",
-          "Mario Garaxy",
-          "Super Smash Bros",
-          "Resident Evil",
-        ],
-      },
-    ];
-
-    // finalなら作成されたArrayを上書きすることが出来る
-    // 一方でconstは､コンパイル時に定数になることから上書きすることができない｡
-    questions[0] = {
-      "questionContext": "What's your favorite game ?",
-      "answers": [
-        "Splatoon",
-        "Mario Garaxy",
-        "Super Smash Bros",
-        "Resident Evil",
-      ],
-    };
-
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('My First App'),
-        ),
-        body: Column(children: [
-          Question(
-            questionContext: questions[_questionIndex]["questionContext"],
+          appBar: AppBar(
+            title: Text('My First App'),
           ),
-          ...(questions[_questionIndex]["answers"] as List<String>)
-              .map((answer) {
-            return Answer(
-                selectHandler: _answerQuestion, answerContext: answer);
-          }).toList()
-        ]),
-      ),
+          body: _questionIndex < questions.length
+              ? Column(children: [
+                  Question(
+                    questionContext: questions[_questionIndex]
+                        ["questionContext"],
+                  ),
+                  ...(questions[_questionIndex]["answers"] as List<String>)
+                      .map((answer) {
+                    return Answer(
+                        selectHandler: _answerQuestion, answerContext: answer);
+                  }).toList()
+                ])
+              : Container(
+                  child: Text(
+                    "Finish",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.orange,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  width: double.infinity,
+                  margin: EdgeInsets.all(30))),
     );
   }
 }
