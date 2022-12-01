@@ -28,8 +28,7 @@ class _MyAppState extends State<MyApp> {
   // ステートレスウィジェットが提供するビルドメソッドを意図的に上書きしていることを明確にする｡
   @override
   Widget build(BuildContext context) {
-    // Map()
-    var questions = [
+    final questions = [
       {
         "questionContext": "What's your favorite color ?",
         "answers": ["Red", "Blue", "Violet"]
@@ -48,6 +47,19 @@ class _MyAppState extends State<MyApp> {
         ],
       },
     ];
+
+    // finalなら作成されたArrayを上書きすることが出来る
+    // 一方でconstは､コンパイル時に定数になることから上書きすることができない｡
+    questions[0] = {
+      "questionContext": "What's your favorite game ?",
+      "answers": [
+        "Splatoon",
+        "Mario Garaxy",
+        "Super Smash Bros",
+        "Resident Evil",
+      ],
+    };
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Answer extends StatelessWidget {
+  //final と const について
+  //final = プログラムが実行された段階から変化しない場合に用いる
+  //const = コンパイル時に定数であることを明確にするために用いる
   final Function selectHandler;
   final String answerContext;
 
